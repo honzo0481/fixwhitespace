@@ -1,5 +1,6 @@
 """Unittests for trim whitespace."""
 
+import os
 from trimwhitespace import trim_whitespace
 
 
@@ -11,10 +12,11 @@ def test_trim_with_trailing_whitespace(tmpdir):
     with open(file_handle, 'w') as f:
         f.write('a line  \na line  \n')
 
-    trim_whitespace('/tmp/pytest-of-root/pytest-0/test_trim_without_trailing_whi0/sub/*.txt')
+    trim_whitespace(folder, ('.txt'))
 
     with open(file_handle, 'r') as f:
         for line in f:
+            print(repr(line))
             assert line == 'a line\n'
 
 
@@ -25,7 +27,8 @@ def test_trim_without_trailing_whitespace(tmpdir):
     with open(file_handle, 'w') as f:
         f.write('a line\na line\n')
 
-    trim_whitespace('/tmp/pytest-of-root/pytest-0/test_trim_without_trailing_whi0/sub/*.txt')
+    trim_whitespace(folder, ('.txt'))
+
     with open(file_handle, 'r') as f:
         for line in f:
             assert line == 'a line\n'

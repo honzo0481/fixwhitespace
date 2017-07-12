@@ -9,9 +9,9 @@ def trim_whitespace(top, exts):
     """Trim whitespace from a file.
 
     path (str): The directory to operate in.
-    exts (list): A list of extensions to process.
+    exts (tuple): A tuple of extensions to process.
     """
-    files = [os.path.join(dirpath, filenames)
+    files = [os.path.join(dirpath, name)
              for dirpath, dirnames, filenames in os.walk(top)
              for name in filenames
              if name.endswith(exts)]
