@@ -1,21 +1,34 @@
 """Trim trailing whitespace."""
 
 import os
-import glob
+import sys
 import re
-import fire
 
 
-def trim_whitespace(dir, recurse=True):
+def trim_whitespace(top, exts):
     """Trim whitespace from a file.
 
-    dir (str): The directory to trim whitespace in.
-    recurse (bool): Flag for recursive operation. Defaults to true.
+    path (str): The directory to operate in.
+    exts (list): A list of extensions to process.
     """
-    files = glob.iglob(dir, recursive=recurse)
-    for f in files:
-        print(f)
+    files = [os.path.join(dirpath, filenames)
+             for dirpath, dirnames, filenames in os.walk(top)
+             for name in filenames
+             if name.endswith(exts)]
+
+    for item in files:
+        lines = []
+        with open(item, 'r') as f:
+            for line in f:
+                lines.append(re.sub(r'[ \t]+$', '', line))
+        with open(item, 'w') as f:
+            f.writelines(lines)
+
+
+def main():
+    """CLI hook."""
+    trim_whitespace(sys.argv[1])
 
 
 if __name__ == '__main__':
-    fire.Fire()
+    main()
