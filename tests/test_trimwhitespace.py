@@ -1,6 +1,5 @@
 """Unittests for trim whitespace."""
 
-import os
 from trimwhitespace import trim_whitespace
 
 
