@@ -1,29 +1,33 @@
-"""Trim trailing whitespace."""
+"""Fix whitespace issues."""
 
 import os
 import sys
 import re
 
-def find_files(top, exts):
-    """Return a generator that yields
 
+def find_files(top, exts):
+    """Return a list of file paths with one of the given extensions.
+
+    Args:
+        top (str): The top level directory to search in.
+        exts (tuple): a tuple of extensions to search for.
+    Returns:
+        a list of matching file paths.
     """
-    return (os.path.join(dirpath, name)
+    return [os.path.join(dirpath, name)
             for dirpath, dirnames, filenames in os.walk(top)
             for name in filenames
-            if name.endswith(exts))
+            if name.endswith(exts)]
 
 
 def trim(top, exts):
     """Trim whitespace from files.
 
-    top (str): The top level directory to operate in.
-    exts (tuple): A tuple of extensions to process.
+    Args:
+        top (str): The top level directory to operate in.
+        exts (tuple): A tuple of extensions to process.
     """
-    files = [os.path.join(dirpath, name)
-             for dirpath, dirnames, filenames in os.walk(top)
-             for name in filenames
-             if name.endswith(exts)]
+    files = find_files(top, exts)
 
     for item in files:
         lines = []
@@ -37,14 +41,12 @@ def trim(top, exts):
 def tabs2spaces(top, exts, n=2):
     """Convert tabs to spaces in a set of files. Ignores tabs enclosed in quotes.
 
-    top (str): The top level directory to operate in.
-    exts (tuple): A tuple of extensions to process.
-    n (optional): The number of spaces to replace each tab with. Default is 2.
+    Args:
+        top (str): The top level directory to operate in.
+        exts (tuple): A tuple of extensions to process.
+        n (optional): The number of spaces to replace each tab with. Default is 2.
     """
-    files = [os.path.join(dirpath, name)
-             for dirpath, dirnames, filenames in os.walk(top)
-             for name in filenames
-             if name.endswith(exts)]
+    files = find_files(top, exts)
 
     for item in files:
         lines = []
@@ -62,7 +64,7 @@ def spaces2tabs(top, exts):
 
 def main():
     """CLI hook."""
-    trim(sys.argv[1])
+    trim(sys.argv[1], sys.argv[2])
 
 
 if __name__ == '__main__':

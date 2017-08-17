@@ -6,4 +6,4 @@ WORKDIR /code
 
 RUN pip install pytest
 
-ENTRYPOINT ["python", "trimwhitespace.py"]
+ENTRYPOINT ["python", "whitespace.py"]
