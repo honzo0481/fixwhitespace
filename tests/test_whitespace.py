@@ -7,9 +7,7 @@ def test_trim_with_trailing_whitespace(tmpdir):
     """Trimming files with trailing whitespace should remove the whitespace."""
     folder = tmpdir.mkdir('sub')
     file_handle = folder.join('whitespace.txt')
-
-    with open(file_handle, 'w') as f:
-        f.write('a line  \na line  \n')
+    file_handle.write('a line  \na line  \n')
 
     trim(folder, ('.txt'))
 
@@ -23,8 +21,7 @@ def test_trim_without_trailing_whitespace(tmpdir):
     """Trimming files without trailing whitespace shouldn't change them."""
     folder = tmpdir.mkdir('sub')
     file_handle = folder.join('nowhitespace.txt')
-    with open(file_handle, 'w') as f:
-        f.write('a line\na line\n')
+    file_handle.write('a line\na line\n')
 
     trim(folder, ('.txt'))
 
@@ -37,8 +34,7 @@ def test_tabs2spaces_without_tabs(tmpdir):
     """Converting tabs in a file without tabs shouldn't alter the file."""
     folder = tmpdir.mkdir('sub')
     file_handle = folder.join('notabs.txt')
-    with open(file_handle, 'w') as f:
-        f.write('    a line\n    a line\n')
+    file_handle.write('    a line\n    a line\n')
 
     tabs2spaces(folder, ('.txt'))
 
@@ -51,9 +47,9 @@ def test_tabs2spaces_with_tabs(tmpdir):
     """Converting tabs in a file containing tabs should replace them."""
     folder = tmpdir.mkdir('sub')
     file_handle = folder.join('tabs.txt')
-    with open(file_handle, 'w') as f:
-        f.write('	line 1\n		line 2\n')
+    file_handle.write('	line 1\n		line 2\n')
     n = 2
+
     tabs2spaces(folder, ('.txt'), n=n)
 
     with open(file_handle, 'r') as f:
@@ -70,7 +66,7 @@ def test_find_files_returns_only_files_with_correct_extensions(tmpdir):
     exts = ('.txt')
     files = find_files(folder, exts=exts)
 
-    # only keep the extensions to make the assert easier.
+    # only keep the extensions - makes the assert simpler.
     files = [f[-4:] for f in files]
 
     assert '.txt' in files
