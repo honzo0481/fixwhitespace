@@ -1,6 +1,6 @@
 """Unittests for trim whitespace."""
 
-from whitespace import trim, tabs2spaces, find_files
+from fixwhitespace import trim, tabs2spaces, find_files
 
 
 def test_trim_with_trailing_whitespace(tmpdir):
