@@ -7,22 +7,21 @@ def readme():
 
 
 setup(name='fixwhitespace',
-      description='Fix whitespace in files',
-      long_description=readme(),
-      url='https://github.com/honzo0481/whitespace',
       author='honzo0481',
       author_email='gonzalesre@gmail.com',
-      license='MIT',
-      packages=['fixwhitespace'],
-      include_package_data=True,
+      description='Fix whitespace in files',
       entry_points={
         'console_scripts': [
-            'trim=fixwhitespace.fixwhitespace:cli.trim',
-            'tabs2spaces.fixwhitespace:cli.tabs2spaces'
-            ]
+            'whitespace=fixwhitespace:main'
+        ]
       },
+      include_package_data=True,
+      license='MIT',
+      long_description=readme(),
+      packages=['fixwhitespace'],
       setup_requires=['pytest-runner'],
       tests_require=['pytest'],
+      url='https://github.com/honzo0481/fixwhitespace',
       version='0.1',
       zip_safe=False,
       )
