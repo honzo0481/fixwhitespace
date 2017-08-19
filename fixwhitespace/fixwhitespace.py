@@ -1,7 +1,6 @@
 """Fix whitespace issues."""
 
 import os
-import sys
 import re
 
 
@@ -62,10 +61,29 @@ def spaces2tabs(top, exts):
     raise Exception('Nope!')
 
 
-def main():
+def main(f, top, exts, n=None):
     """CLI hook."""
-    trim(sys.argv[1], sys.argv[2])
+    FNMAP = {
+        'trim': trim,
+        'tabs2spaces': tabs2spaces
+    }
+    fn = FNMAP[f]
+
+    if n:
+        fn(top, exts, n)
+    else:
+        fn(top, exts)
 
 
 if __name__ == '__main__':
-    main()
+    import argparse
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('f')
+    parser.add_argument('top')
+    parser.add_argument('-n')
+    parser.add_argument('exts', nargs=argparse.REMAINDER)
+
+    kwargs = vars(parser.parse_args())
+    kwargs['exts'] = tuple(kwargs['exts'])
+
+    main(**kwargs)
