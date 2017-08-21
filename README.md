@@ -7,5 +7,8 @@ run the tests in a container:
 run them without a container:
 > $ pytest
 
-run the script:
-> $ fixwhitespace /path/to/dir .ext1 .ext2
+trim whitespace on all files in a directory with a matching extension:
+> $ fixwhitespace trim /path/to/dir .ext1 .ext2
+
+convert tabs to spaces on all files in a directory with a matching extension:
+> $ fixwhitespace tabs2spaces /path/to/dir .ext1 .ext2
