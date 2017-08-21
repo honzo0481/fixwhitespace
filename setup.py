@@ -12,7 +12,7 @@ setup(name='fixwhitespace',
       description='Fix whitespace in files',
       entry_points={
         'console_scripts': [
-            'whitespace=fixwhitespace:main'
+            'fixwhitespace=fixwhitespace:main'
         ]
       },
       include_package_data=True,

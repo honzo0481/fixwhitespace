@@ -2,6 +2,7 @@
 
 import os
 import re
+import argparse
 
 
 def find_files(top, exts):
@@ -61,29 +62,28 @@ def spaces2tabs(top, exts):
     raise Exception('Nope!')
 
 
-def main(f, top, exts, n=None):
+def main():
     """CLI hook."""
-    FNMAP = {
-        'trim': trim,
-        'tabs2spaces': tabs2spaces
-    }
-    fn = FNMAP[f]
-
-    if n:
-        fn(top, exts, n)
-    else:
-        fn(top, exts)
-
-
-if __name__ == '__main__':
-    import argparse
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('f')
     parser.add_argument('top')
     parser.add_argument('-n')
     parser.add_argument('exts', nargs=argparse.REMAINDER)
 
-    kwargs = vars(parser.parse_args())
-    kwargs['exts'] = tuple(kwargs['exts'])
+    args = vars(parser.parse_args())
+    args['exts'] = tuple(args['exts'])
 
-    main(**kwargs)
+    FNMAP = {
+        'trim': trim,
+        'tabs2spaces': tabs2spaces
+    }
+    fn = FNMAP[args['f']]
+
+    if args['n']:
+        fn(args['top'], args['exts'], args['n'])
+    else:
+        fn(args['top'], args['exts'])
+
+
+if __name__ == '__main__':
+    main()
