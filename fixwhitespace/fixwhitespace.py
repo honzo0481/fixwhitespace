@@ -19,66 +19,46 @@ def find_files(top, exts):
             if name.endswith(exts)]
 
 
-def trim(top, exts):
-    """Trim whitespace from files.
+def fix_whitespace(issue, exts, top, n=0):
+    """Loop over a file and fix whitespace.
 
     Args:
-        top (str): The top level directory to operate in.
-        exts (tuple): A tuple of extensions to process.
-    """
-    files = find_files(top, exts)
+        issue (str): the whitespace issue to fix.
+            `trim`: trim whitespace from the ends of lines. Preserves line endings.
+            `tabs2spaces`: Convert tabs at the fronts of lines.
 
-    for item in files:
-        lines = []
-        with open(item, 'r') as f:
-            for line in f:
-                lines.append(re.sub(r'[ \t]+$', '', line))
-        with open(item, 'w') as f:
-            f.writelines(lines)
-
-
-def tabs2spaces(top, exts, n=2):
-    """Convert tabs to spaces in a set of files. Ignores tabs enclosed in quotes.
-
-    Args:
         top (str): The top level directory to operate in.
         exts (tuple): A tuple of extensions to process.
         n (optional): The number of spaces to replace each tab with. Default is 2.
     """
+    issue_map = {
+        'trim': r'[ \t]+$',
+        'tabs2spaces': r'^\t',
+    }
+
     files = find_files(top, exts)
 
-    for item in files:
+    for f in files:
         lines = []
-        with open(item, 'r') as f:
+        with open(f, 'r') as f:
             for line in f:
-                lines.append(re.sub(r'\t', ' ' * n, line))
-        with open(item, 'w') as f:
+                lines.append(re.sub(issue_map[issue], ' ' * n, line))
+        with open(f, 'w') as f:
             f.writelines(lines)
 
 
-def spaces2tabs(top, exts):
-    """Raise an exception. All in good fun."""
-    raise Exception('Nope!')
-
-
-def main(f, top, exts, n=None):
+def main(issue, top, exts, n=None):
     """CLI hook."""
-    FNMAP = {
-        'trim': trim,
-        'tabs2spaces': tabs2spaces
-    }
-    fn = FNMAP[f]
-
     if n:
-        fn(top, exts, n)
+        fix_whitespace(issue, top, exts, n)
     else:
-        fn(top, exts)
+        fix_whitespace(issue, top, exts)
 
 
 if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('f')
+    parser.add_argument('issue')
     parser.add_argument('top')
     parser.add_argument('-n')
     parser.add_argument('exts', nargs=argparse.REMAINDER)
